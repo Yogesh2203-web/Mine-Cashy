@@ -12,8 +12,13 @@ document.addEventListener("DOMContentLoaded", function(){
     return elRect.left - navRect.left;
   }
 
-  const currentPage =
-    location.pathname.split("/").pop() || "index.html";
+let path = location.pathname.split("/").pop();
+
+if(path === "" || path === "/"){
+  path = "index.html"; // 🔥 your new home page
+}
+
+const currentPage = path;
 
   let activeLink = null;
 
