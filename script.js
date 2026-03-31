@@ -24,7 +24,7 @@ localStorage.setItem("telegram", user.id);
 localStorage.setItem("name", user.first_name);
 
 // redirect
-window.location.href = "home.html";
+window.location.href = "index.html";
 }
 
 /* =========================
