@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- LUCIDE -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<title>Boost Mining</title>
+
+<style>
+
+/* 🔥 ALL BUTTON BASE ANIMATION */
+button{
+  position:relative;
+  overflow:hidden;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+/* PRESS EFFECT (MAIN) */
+button:active{
+  transform:scale(0.94);
+  filter:brightness(0.9);
+}
+
+/* RIPPLE EFFECT */
+button::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,0.15);
+  opacity:0;
+  transition:opacity .2s ease;
+}
+
+button:active::after{
+  opacity:1;
+}
+
+/* HOVER (DESKTOP) */
+@media (hover:hover){
+  button:hover{
+    transform:scale(1.03);
+    filter:brightness(1.05);
+  }
+}
+
+/* 💎 PAY BUTTON EXTRA GLOW */
+.pay{
+  animation:payGlow 2.5s ease-in-out infinite;
+}
+
+@keyframes payGlow{
+  0%{
+    box-shadow:
+      0 0 10px rgba(255,0,200,.3),
+      0 0 20px rgba(255,0,200,.2);
+  }
+  50%{
+    box-shadow:
+      0 0 25px rgba(255,0,200,.6),
+      0 0 45px rgba(255,0,200,.4);
+  }
+  100%{
+    box-shadow:
+      0 0 10px rgba(255,0,200,.3),
+      0 0 20px rgba(255,0,200,.2);
+  }
+}
+
+/* ✨ CANCEL BUTTON SOFT GLOW */
+.cancel{
+  transition:all .2s ease;
+}
+
+.cancel:active{
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,.2),
+    0 0 10px rgba(255,255,255,.1);
+}
+
+/* 🎟 APPLY BUTTON MICRO ANIMATION */
+.cashback button:active{
+  transform:scale(0.9);
+  background:#1c0d35;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+/* 🔥 FULL SCREEN BODY */
+body{
+background:transparent;
+color:white;
+}
+
+/* 🔥 SHEET */
+.boost-sheet{
+width:100%;
+height:100vh;
+background:radial-gradient(circle at top,#120325,#05010a);
+
+display:flex;
+flex-direction:column;
+
+border-radius:22px 22px 0 0;
+}
+
+/* HANDLE */
+.drag-handle{
+width:40px;
+height:5px;
+background:#ffffff30;
+border-radius:10px;
+margin:10px auto;
+}
+
+/* CONTENT */
+.boost-content{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+padding:18px;
+
+overflow:hidden;
+}
+
+/* TITLE */
+.title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:20px;
+font-weight:600;
+}
+
+.subtitle{
+font-size:13px;
+opacity:.6;
+margin:6px 0 16px;
+}
+
+/* LABEL */
+.label{
+font-size:13px;
+margin:8px 0 6px;
+opacity:.8;
+}
+
+/* INPUT */
+.input-box{
+display:flex;
+align-items:center;
+background:#0b0516;
+border-radius:12px;
+padding:12px;
+margin-bottom:10px;
+}
+
+.input-box span{
+margin-right:6px;
+opacity:.7;
+}
+
+.input-box input{
+background:none;
+border:none;
+outline:none;
+color:white;
+width:100%;
+}
+
+/* CASHBACK */
+.cashback{
+display:flex;
+gap:10px;
+margin-bottom:12px;
+}
+
+.cashback input{
+flex:1;
+padding:10px;
+background:#0b0516;
+border:none;
+border-radius:10px;
+color:white;
+}
+
+.cashback button{
+padding:10px 14px;
+border:none;
+border-radius:10px;
+background:#140a25;
+color:#aaa;
+}
+
+/* DETAILS */
+.details{
+background:#0c0616;
+border-radius:14px;
+padding:14px;
+margin-top:10px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+font-size:13px;
+}
+
+.row span:first-child{
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+.green{
+color:#2cff9c;
+}
+
+/* TOTAL */
+.total{
+display:flex;
+justify-content:space-between;
+margin:14px 0;
+}
+
+.price{
+color:#ff7bd5;
+font-size:20px;
+font-weight:600;
+}
+
+/* BUTTONS */
+
+/* 🔥 PAY BUTTON (CLAIM STYLE) */
+.pay{
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+
+background:#fff;
+color:#000;
+font-weight:600;
+
+box-shadow:0 0 20px #fff;
+
+margin-bottom:8px;
+}
+
+/* 🔥 CANCEL BUTTON (MATCH STYLE) */
+.cancel{
+width:100%;
+padding:14px;
+border-radius:14px;
+
+background:#fff;
+color:#000;
+
+border:none;
+
+box-shadow:0 0 15px rgba(255,255,255,.6);
+}
+
+
+/* ICON */
+.icon{
+width:18px;
+height:18px;
+stroke-width:1.8;
+color:#c084fc;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="boost-sheet">
+
+  <div class="drag-handle"></div>
+
+  <div class="boost-content">
+
+    <!-- TOP -->
+    <div>
+
+      <div class="title">
+        <i data-lucide="rocket" class="icon"></i>
+        Boost Mining Speed
+      </div>
+
+      <p class="subtitle">Increase your mining power for 30 days.</p>
+
+      <div class="label">Enter Base Amount (Min ₹499)</div>
+
+      <div class="input-box">
+        <span>₹</span>
+        <input type="number" id="amount" value="499" min="499">
+      </div>
+
+      <div class="label">
+        <i data-lucide="ticket" class="icon"></i>
+        Cashback Code
+      </div>
+
+      <div class="cashback">
+        <input placeholder="E.g., SAVE20">
+        <button>Apply</button>
+      </div>
+
+      <div class="details">
+
+        <div class="row">
+          <span>₹ Base Amount:</span>
+          <span id="base">₹499.00</span>
+        </div>
+
+        <div class="row">
+          <span>% GST (10%):</span>
+          <span id="gst">₹49.90</span>
+        </div>
+
+        <div class="row green">
+          <span>
+            <i data-lucide="zap" class="icon"></i>
+            Speed Boost:
+          </span>
+          <span id="speed">+49.90 GH/s</span>
+        </div>
+
+        <div class="row green">
+          <span>
+            <i data-lucide="trending-up" class="icon"></i>
+            Daily Earning:
+          </span>
+          <span id="earning">₹275.73</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+    <div>
+
+      <div class="total">
+        <span>Total Payable:</span>
+        <span class="price" id="total">₹548.90</span>
+      </div>
+
+      <button class="pay" id="payBtn">
+        <i data-lucide="zap"></i> Pay ₹548.90
+      </button>
+
+      <button class="cancel" onclick="window.parent.closeModal()">
+        ✕ Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ICON INIT */
+lucide.createIcons();
+
+/* ELEMENTS */
+const amount = document.getElementById("amount");
+const base = document.getElementById("base");
+const gst = document.getElementById("gst");
+const speed = document.getElementById("speed");
+const earning = document.getElementById("earning");
+const total = document.getElementById("total");
+const payBtn = document.getElementById("payBtn");
+
+/* UPDATE UI */
+function update(){
+  let amt = Math.max(499, Number(amount.value));
+
+  let gstVal = amt * 0.10;
+  let totalVal = amt + gstVal;
+
+  let speedVal = amt * 0.1;
+  let earnVal = amt * 0.552;
+
+  base.textContent = "₹"+amt.toFixed(2);
+  gst.textContent = "₹"+gstVal.toFixed(2);
+  speed.textContent = "+"+speedVal.toFixed(2)+" GH/s";
+  earning.textContent = "₹"+earnVal.toFixed(2);
+  total.textContent = "₹"+totalVal.toFixed(2);
+
+  payBtn.innerHTML = `<i data-lucide="zap"></i> Pay ₹${totalVal.toFixed(2)}`;
+  lucide.createIcons();
+}
+
+amount.addEventListener("input", update);
+update();
+
+/* 🔥 RAZORPAY PAYMENT */
+payBtn.onclick = () => {
+
+  let amt = Math.max(499, Number(amount.value));
+
+  let totalVal = amt + (amt * 0.10);
+
+  var options = {
+    "key": "rzp_test_SV7mKfLPjxN03J",
+    "amount": totalVal * 100,
+    "currency": "INR",
+    "name": "Mine Cashy",
+    "description": "Boost Mining Speed",
+
+    "handler": function (){
+
+      /* 🔥 FRONTEND BOOST APPLY */
+      window.parent.applyBoost(amt);
+
+      alert("⚡ Boost Activated Successfully!");
+
+      window.parent.closeModal();
+    },
+
+    "theme": {
+      "color": "#a855f7"
+    }
+  };
+
+  var rzp1 = new Razorpay(options);
+  rzp1.open();
+};
+</script>
+
+</body>
+</html>
+

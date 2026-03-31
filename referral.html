@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Invite Friends – Indian Rupees Miner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="referral.css">
+
+<link rel="stylesheet" href="navbar.css">
+
+</head>
+
+<body>
+
+<header class="app-header">
+  <h1><i class="fa-solid fa-fire"></i> Mine Cashy </h1>
+</header>
+
+<section class="page-title">
+  <h2><i class="fa-solid fa-user-group"></i> Invite Friends</h2>
+  <p>Share your referral code and earn rewards!</p>
+</section>
+
+<main class="container">
+
+  <!-- REFERRAL CODE -->
+  <div class="card">
+    <div class="card-title">
+      <i class="fa-solid fa-qrcode"></i>
+      <span>Your Unique Referral Code</span>
+    </div>
+
+    <div class="code-box">
+      <span id="refCode">Cash 123</span>
+      <i class="fa-solid fa-copy"></i>
+    </div>
+  </div>
+
+  <!-- REFERRAL LINK -->
+  <div class="card">
+    <div class="card-title">
+      <i class="fa-solid fa-link"></i>
+      <span>Your Referral Link</span>
+    </div>
+
+    <div class="link-box">
+      https://t.me/indianminingbot?start=Cash 123
+    </div>
+
+    <button class="telegram-btn">
+      <i class="fa-brands fa-telegram"></i>
+      Share via Telegram
+    </button>
+  </div>
+
+  <!-- BENEFITS -->
+  <div class="card">
+    <div class="card-title">
+      <i class="fa-solid fa-gift"></i>
+      <span>Referral Benefits</span>
+    </div>
+
+    <div class="benefits">
+      <div class="benefit">
+        <span>For You (coin miner bot)</span>
+        <strong>₹50</strong>
+        <small>Bonus Amount Only</small>
+      </div>
+
+      <div class="benefit">
+        <span>For Your Friend</span>
+        <strong>₹25 + ⚡ 2 GH/s</strong>
+        <small>Joining Bonus</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFERRED FRIENDS -->
+  <div class="card">
+    <div class="card-title">
+      <i class="fa-solid fa-users"></i>
+      <span>Your Referred Friends (0)</span>
+      <i class="fa-solid fa-rotate"></i>
+    </div>
+
+    <div class="empty">
+      You haven't referred any friends yet.
+    </div>
+  </div>
+
+</main>
+<div class="bottom-nav" id="bottomNav">
+  <div class="nav-indicator" id="navIndicator"></div>
+
+  <a href="wallet.html" class="nav-link">
+    <i class="fa-solid fa-wallet"></i>
+  </a>
+
+  <a href="referral.html" class="nav-link">
+    <i class="fa-solid fa-user"></i>
+  </a>
+
+  <a href="index.html" class="nav-link">
+    <i class="fa-solid fa-house"></i>
+  </a>
+
+  <a href="settings.html" class="nav-link">
+    <i class="fa-solid fa-gear"></i>
+  </a>
+</div>
+
+<script>
+const telegram = localStorage.getItem("telegram");
+
+/* GET REF CODE FROM SERVER */
+fetch("/user/" + telegram)
+.then(res => res.json())
+.then(data => {
+
+  document.getElementById("refCode").textContent =
+    data.ref_code;
+
+  document.querySelector(".link-box").textContent =
+    window.location.origin + "?ref=" + data.ref_code;
+});
+</script>
+
+<script src="navbar.js"></script>
+
+</body>
+</html>

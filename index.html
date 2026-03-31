@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Indian Rupees Miner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="navbar.css">
+</head>
+
+<body>
+
+<header class="app-header">
+  <h2><i class="fa-solid fa-fire"></i> Mine Cashy</h2>
+</header>
+
+
+<div class="balances">
+  <div class="balance">
+    <span>Mining Balance</span>
+    <strong class="glow-wallet">₹<span id="wallet">0.00</span></strong>
+
+
+  </div>
+  <div class="balance">
+    <span>Referral Balance</span>
+    <strong>₹0.00</strong>
+  </div>
+</div>
+
+<div class="miner-wrap">
+
+<!-- ⚠️ YOUR MINER – NOT TOUCHED -->
+<svg viewBox="0 0 200 200">
+
+  <g class="outer" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round">
+    <path d="M100 10 A90 90 0 0 1 185 100"/>
+    <path d="M100 190 A90 90 0 0 1 15 100"/>
+    <polygon points="182,92 190,100 182,108" fill="#fff"/>
+    <polygon points="18,108 10,100 18,92" fill="#fff"/>
+  </g>
+
+  <g class="gear glow" stroke="#fff" stroke-width="1.6" fill="none">
+    <circle cx="100" cy="100" r="58"/>
+
+    <g fill="#fff">
+      <rect x="97" y="18" width="6" height="12"/>
+      <rect x="97" y="170" width="6" height="12"/>
+      <rect x="18" y="97" width="12" height="6"/>
+      <rect x="170" y="97" width="12" height="6"/>
+
+      <rect x="40" y="30" width="8" height="14" transform="rotate(45 44 37)"/>
+      <rect x="152" y="30" width="8" height="14" transform="rotate(135 156 37)"/>
+      <rect x="152" y="156" width="8" height="14" transform="rotate(225 156 163)"/>
+      <rect x="40" y="156" width="8" height="14" transform="rotate(315 44 163)"/>
+    </g>
+  </g>
+
+  <defs>
+    <radialGradient id="gloss" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#333"/>
+      <stop offset="100%" stop-color="#000"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="100" cy="100" r="32"
+          fill="url(#gloss)"
+          stroke="#fff"
+          stroke-width="1.8"/>
+
+  <text x="100" y="114"
+        font-size="36"
+        text-anchor="middle"
+        fill="#fff"
+        font-weight="600"
+        class="glow">₹</text>
+</svg>
+
+<div class="amount glow-balance">₹<span id="mined">0.000000</span></div>
+
+<div class="speed">
+  <span id="speedDisplay">2.00</span> GH/s ⚡
+</div>
+
+</div>
+
+<div class="actions">
+  <button class="claim" onclick="claim()">
+    <i class="fa-solid fa-check"></i> Claim
+  </button>
+  
+<button class="boost-btn" onclick="openModal()">
+  <i class="fa-solid fa-bolt"></i> Boost
+</button>
+
+
+
+<div class="bottom-nav" id="bottomNav">
+  <div class="nav-indicator" id="navIndicator"></div>
+
+  <a href="wallet.html" class="nav-link">
+    <i class="fa-solid fa-wallet"></i>
+  </a>
+
+  <a href="referral.html" class="nav-link">
+    <i class="fa-solid fa-user"></i>
+  </a>
+
+  <a href="index.html" class="nav-link">
+    <i class="fa-solid fa-house"></i>
+  </a>
+
+  <a href="settings.html" class="nav-link">
+    <i class="fa-solid fa-gear"></i>
+  </a>
+</div>
+<script>
+  
+  let history =
+  JSON.parse(localStorage.getItem("txHistory")) || [];
+
+function claim(){
+  if(mined <= 0) return;
+
+
+
+  // add history
+  history.push({
+    type: "Claim",
+    amount: mined.toFixed(6),
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("txHistory", JSON.stringify(history));
+
+  mined = 0;
+
+  document.getElementById("wallet").textContent = wallet.toFixed(2);
+  document.getElementById("mined").textContent = "0.000000";
+}
+
+
+</script>
+<script src="script.js"></script>
+
+<script src="navbar.js"></script>
+
+
+<!-- BOOST POPUP -->
+<div id="boostPopup" class="boost-popup">
+  <div class="boost-box">
+    <iframe src="boost.html"></iframe>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>

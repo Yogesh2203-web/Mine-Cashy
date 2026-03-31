@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wallet Overview – Indian Rupees Miner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="wallet.css">
+
+<link rel="stylesheet" href="navbar.css">
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="top">
+  <h2><i class="fa-solid fa-fire"></i> Mine Cashy</h2>
+</header>
+
+
+<!-- TITLE -->
+<section class="title">
+  <h2><i class="fa-solid fa-coins"></i> Wallet Overview</h2>
+  <p>Manage your earnings and withdrawals.</p>
+</section>
+
+<!-- CONTENT -->
+<main class="container">
+
+  <!-- BALANCES -->
+  <div class="balance-grid">
+
+    <div class="balance-card">
+      <div class="card-head">
+        <span><i class="fa-solid fa-database"></i> Mining Balance</span>
+        <i class="fa-solid fa-rotate"></i>
+      </div>
+      <div class="amount" id="miningBalance">₹0.00</div>
+    </div>
+
+    <div class="balance-card">
+      <div class="card-head">
+        <span><i class="fa-solid fa-users"></i> Referral Balance</span>
+        <i class="fa-solid fa-rotate"></i>
+      </div>
+      <div class="amount">₹0.00</div>
+    </div>
+
+  </div>
+
+  <!-- WITHDRAW -->
+  <div class="withdraw-card">
+    <h3><i class="fa-solid fa-arrow-down"></i> Withdraw Funds</h3>
+    <p>Securely withdraw your Mining and Referral balances.</p>
+
+    <div class="withdraw-actions">
+      <button class="btn" id="withdrawBtn" onclick="withdraw()">Withdraw Mining</button>
+
+      <button class="btn">Withdraw Referral</button>
+    </div>
+  </div>
+
+  <!-- TRANSACTION HISTORY -->
+  <div class="history-card">
+
+    <div class="history-head">
+      <h3><i class="fa-solid fa-file-lines"></i> Transaction History</h3>
+      <i class="fa-solid fa-rotate"></i>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active">All</div>
+      <div class="tab">Mining</div>
+      <div class="tab">Referral</div>
+    </div>
+
+    <div class="tx-list" id="txList">
+      <!-- Transactions added dynamically -->
+       <div id="txList"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<div class="bottom-nav" id="bottomNav">
+  <div class="nav-indicator" id="navIndicator"></div>
+
+  <a href="wallet.html" class="nav-link">
+    <i class="fa-solid fa-wallet"></i>
+  </a>
+
+  <a href="referral.html" class="nav-link">
+    <i class="fa-solid fa-user"></i>
+  </a>
+
+  <a href="index.html" class="nav-link">
+    <i class="fa-solid fa-house"></i>
+  </a>
+
+  <a href="settings.html" class="nav-link">
+    <i class="fa-solid fa-gear"></i>
+  </a>
+</div>
+
+<!-- LOAD WALLET DATA -->
+
+
+<script>
+function updateWallet(){
+  const balance =
+    parseFloat(localStorage.getItem("miningBalance")) || 0.00;
+
+  document.getElementById("miningBalance").textContent =
+    "₹" + balance.toFixed(2);
+}
+
+// auto refresh every second
+setInterval(updateWallet, 1000);
+updateWallet();
+</script>
+<script>/* =========================
+   🔥 WALLET CONNECT SYSTEM
+========================= */
+
+function updateWallet(){
+
+  let wallet = parseFloat(localStorage.getItem("wallet")) || 0;
+
+  let el = document.getElementById("miningBalance");
+
+  if(el){
+    el.textContent = "₹" + wallet.toFixed(2);
+  }
+}
+
+/* auto update */
+setInterval(updateWallet, 1000);
+updateWallet();
+
+
+/* =========================
+   🔥 WITHDRAW FUNCTION
+========================= */
+
+function withdraw(){
+
+  let balance =
+    parseFloat(localStorage.getItem("wallet")) || 0;
+
+  if(balance <= 0) return;
+
+  saveHistory("Withdraw", balance.toFixed(2)); // 🔥 added
+
+  localStorage.setItem("wallet", "0.00");
+
+  showWithdrawSuccess(balance.toFixed(2));
+
+
+
+  if(balance <= 0){
+    alert("No balance to withdraw");
+    return;
+  }
+
+  // save history
+  const history =
+    JSON.parse(localStorage.getItem("txHistory")) || [];
+
+  history.push({
+    type: "Withdraw",
+    amount: balance.toFixed(2),
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("txHistory", JSON.stringify(history));
+
+  // reset wallet
+  localStorage.setItem("wallet", "0.00");
+
+  showWithdrawSuccess(balance.toFixed(2));
+
+  updateWallet(); // refresh UI
+}
+
+
+/* =========================
+   🔥 LOCK SYSTEM (₹1000)
+========================= */
+
+function checkWithdraw(){
+
+  let deposit = Number(localStorage.getItem("deposit")) || 0;
+
+  let btn = document.getElementById("withdrawBtn");
+
+  if(!btn) return;
+
+  if(deposit < 1000){
+
+    btn.disabled = true;
+    btn.style.opacity = "0.5";
+    btn.innerText = " Deposit ₹1000 to Unlock";
+
+  } else {
+
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.innerText = "Withdraw Mining";
+
+  }
+}
+
+/* auto check */
+setInterval(checkWithdraw, 1000);
+checkWithdraw();
+
+
+/* =========================
+   🔥 SUCCESS TOAST
+========================= */
+
+function showWithdrawSuccess(amount){
+
+  const toast = document.getElementById("successToast");
+
+  if(!toast) return;
+
+  toast.querySelector("span").textContent =
+    `Withdraw Successful ₹${amount}`;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
+}
+
+function loadHistory(){
+
+  const history =
+    JSON.parse(localStorage.getItem("txHistory")) || [];
+
+  const list = document.getElementById("txList");
+
+  list.innerHTML = "";
+
+  if(history.length === 0){
+    list.innerHTML = "<div class='empty'>No transactions yet</div>";
+    return;
+  }
+
+  history.slice().reverse().forEach(tx => {
+
+    let icon = "⛏️";
+    let color = "#42ff9c";
+    let sign = "+";
+
+    if(tx.type === "Withdraw"){
+      icon = "💸";
+      color = "#ff4d4d";
+      sign = "-";
+    }
+
+    if(tx.type === "Boost"){
+      icon = "⚡";
+      color = "#ffd84d";
+    }
+
+    if(tx.type === "Referral"){
+      icon = "👥";
+      color = "#00eaff";
+    }
+
+    const row = document.createElement("div");
+    row.className = "tx-row";
+
+    row.innerHTML = `
+      <div class="tx-left">
+        <div class="tx-icon">${icon}</div>
+        <div>
+          <strong>${tx.type}</strong>
+          <small>${tx.time}</small>
+        </div>
+      </div>
+
+      <div class="tx-right">
+        <span style="color:${color}">
+          ${sign}₹${tx.amount}
+        </span>
+      </div>
+    `;
+
+    list.appendChild(row);
+  });
+}
+
+/* AUTO REFRESH */
+setInterval(loadHistory, 1000);
+loadHistory();
+
+function loadHistory(){
+
+  const history =
+    JSON.parse(localStorage.getItem("txHistory")) || [];
+
+  const list = document.getElementById("txList");
+
+  list.innerHTML = "";
+
+  if(history.length === 0){
+    list.innerHTML = "<div>No transactions yet</div>";
+    return;
+  }
+
+  history.slice().reverse().forEach(tx => {
+
+    let icon = "⛏️";
+    let color = "#42ff9c";
+    let sign = "+";
+
+    if(tx.type === "Withdraw"){
+      icon = "💸";
+      color = "#ff4d4d";
+      sign = "-";
+    }
+
+    if(tx.type === "Boost"){
+      icon = "⚡";
+      color = "#ffd84d";
+    }
+
+    if(tx.type === "Referral"){
+      icon = "👥";
+      color = "#00eaff";
+    }
+
+    const row = document.createElement("div");
+    row.className = "tx-row";
+
+    row.innerHTML = `
+      <div>
+        ${icon} <strong>${tx.type}</strong><br>
+        <small>${tx.time}</small>
+      </div>
+      <div style="color:${color}">
+        ${sign}₹${tx.amount}
+      </div>
+    `;
+
+    list.appendChild(row);
+  });
+}
+
+setInterval(loadHistory, 1000);
+loadHistory();
+</script>
+<script src="navbar.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+/* ============================= */
+/* ===== PREMIUM NAVBAR ======= */
+/* ============================= */
+
+.bottom-nav{
+  position:fixed;
+  bottom:22px;
+  left:50%;
+  transform:translateX(-50%);
+  width:94%;
+  height:76px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+
+  border-radius:50px;
+
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.02)
+  );
+
+  backdrop-filter:blur(28px);
+
+  border:1px solid rgba(255,255,255,0.15);
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,0.7),
+    inset 0 0 25px rgba(255,255,255,0.05);
+
+  z-index:999;
+}
+
+/* NAV BUTTONS */
+.nav-link{
+  width:60px;
+  height:60px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:22px;
+  position:relative;
+  z-index:2;
+  text-decoration:none;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.nav-link i{
+  font-size:22px;
+  color:#00eaff;
+  opacity:.5;
+  transition:
+    transform .25s ease,
+    opacity .25s ease,
+    color .25s ease;
+}
+
+/* ACTIVE ICON */
+.nav-link.active i{
+  color:#000;
+  opacity:1;
+  transform:scale(1.08);
+}
+
+.nav-link.active{
+  box-shadow:
+    0 0 18px rgba(0,234,255,.4);
+}
+
+/* PRESS EFFECT */
+.nav-link:active{
+  transform:scale(.9);
+}
+
+/* MOVING INDICATOR */
+.nav-indicator{
+  position:absolute;
+  top:8px;
+  left:0;
+
+  width:60px;
+  height:60px;
+
+  border-radius:22px;
+
+  background:linear-gradient(
+    135deg,
+    #00eaff,
+    #0099ff
+  );
+
+  box-shadow:
+    0 0 25px #00eaff,
+    0 0 60px rgba(0,234,255,.7);
+
+  transition:
+    transform .45s cubic-bezier(.34,1.56,.64,1);
+
+  z-index:1;
+}
